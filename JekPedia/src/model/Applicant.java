@@ -1,11 +1,14 @@
 package model;
 
+import state.ApplicantState;
+import state.SubmissionState;
+
 public class Applicant {
 	private String code;
 	private String name;
 	private int jobExperience;
 	private String jobPreferences;
-	private String state;
+	private ApplicantState state;
 	
 	public Applicant(String code, String name, int jobExperience, String jobPreferences) {
 		super();
@@ -13,7 +16,7 @@ public class Applicant {
 		this.name = name;
 		this.jobExperience = jobExperience;
 		this.jobPreferences = jobPreferences;
-		this.state = "Going Through Paperwork";
+		this.state = new SubmissionState();
 	}
 	public String getCode() {
 		return code;
@@ -33,11 +36,14 @@ public class Applicant {
 	public void setJobExperience(int jobExperience) {
 		this.jobExperience = jobExperience;
 	}
-	public String getState() {
+	public ApplicantState getState() {
 		return state;
 	}
-	public void setState(String state) {
+	public void setState(ApplicantState state) {
 		this.state = state;
+	}
+	public String getStateName() {
+		return state.getStateName();
 	}
 	public String getJobPreferences() {
 		return jobPreferences;
@@ -51,31 +57,10 @@ public class Applicant {
 		System.out.println("Applicant Name : " + this.name);
 		System.out.println("Job Experience : " + this.jobExperience);
 		System.out.println("Job Preference : " + this.jobPreferences);
-		System.out.println("Current Phase  : " + this.state);
+		System.out.println("Current Phase  : " + this.state.getStateName());
 	}
 	public void changeState() {
-		switch (this.state) {
-		case "Going Through Paperwork":
-			this.setState("Ongoing Interviews");
-			break;
-		case "Ongoing Interviews":
-			switch (this.jobPreferences) {
-			case "Backend Dev":
-				this.setState("Solving Algorithm Problems");
-				break;
-
-			case "Frontend Dev":
-				this.setState("Designing Application UI UX");
-				break;
-			}
-			break;
-		case "Solving Algorithm Problems":
-			this.setState("Applicant Successfully Saved");
-			break;
-		case "Designing Application UI UX":
-			this.setState("Applicant Successfully Saved");
-			break;
-		}
+		state.handle(this);
 	}
 	
 	
