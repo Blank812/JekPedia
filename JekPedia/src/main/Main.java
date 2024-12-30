@@ -135,12 +135,9 @@ public class Main {
 					randomCode += characters.charAt(index);
 				}
 				
-				
-				String code = randomCode;
-				
 				System.out.println("Data submitted!");
 				
-				database.add(new Applicant(code, name, jobExperience, jobPreferences));
+				database.add(new Applicant(randomCode, name, jobExperience, jobPreferences));
 				break;
 
 			case "2":
@@ -151,15 +148,19 @@ public class Main {
 						applicant.displayInformation();
 						String choice = "";
 						do {
-							System.out.println("Preview next applicant form ? [N for next | Q to quit][case sensitive]: ");
+							System.out.println("Preview next applicant form ? [N for next | U to update applicant status | Q to quit][case sensitive]: ");
 							choice = scan.nextLine();
 						} while (!choice.equals("N") && !choice.equals("Q"));
 						
 						switch (choice) {
 						case "N":
-							applicant.changeState();
 							break;
-
+							
+						case "U":
+							applicant.changeState();
+							System.out.println("Applicant status updated");
+							break;
+							
 						case "Q":
 							return;
 						}
