@@ -1,16 +1,17 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 import factory.ApplicantFactory;
 import model.Applicant;
+import singleton.ApplicantFactorySingleton;
+import singleton.ScannerSingleton;
 
 public class Main {
-	private Scanner scan = new Scanner(System.in);
 	private ArrayList<Applicant> database = new ArrayList<>();
-	private ApplicantFactory applicantFactory = new ApplicantFactory();
+	private ApplicantFactory applicantFactory = ApplicantFactorySingleton.getInstance();
+	private Scanner scan = ScannerSingleton.getInstance();
 	
 	public Main() {
 		String option = "";
