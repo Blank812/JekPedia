@@ -7,6 +7,10 @@ import factory.ApplicantFactory;
 import model.Applicant;
 import singleton.ApplicantFactorySingleton;
 import singleton.ScannerSingleton;
+import strategy.ExperienceValidation;
+import strategy.JobPreferencesValidation;
+import strategy.NameValidation;
+import strategy.ValidationStrategy;
 
 public class Main {
 	private ArrayList<Applicant> database = new ArrayList<>();
@@ -34,6 +38,7 @@ public class Main {
 				viewApplicants();
 				break;
 			}
+			
 		} while (!option.equals("3"));
 		
 		System.out.println("Thank you for your cooperation!");
@@ -42,28 +47,10 @@ public class Main {
 		
 }
 	private void registerApplicant() {
-		String name = "";
-		do {
-			System.out.print("Input name [cannot be empty]: ");
-			name = scan.nextLine();
-		} while(name.isEmpty());
-		
-		int jobExperience = 0;
-		do {
-			System.out.print("Input job experience [> 1]: ");
-			try {
-				jobExperience = scan.nextInt();
-			} catch (Exception e) {	
-			} finally {
-				scan.nextLine();
-			}
-		} while(jobExperience <= 1);
-		
-		String jobPreferences;
-		do {
-			System.out.print("Input job preferences [Backend Dev | Frontend Dev][case sensitive]: ");
-			jobPreferences = scan.nextLine();
-		} while(!jobPreferences.equals("Backend Dev") && !jobPreferences.equals("Frontend Dev"));
+		String name = validateInput("Input name [cannot be empty]: ", new NameValidation());
+		String jobExperienceInput = validateInput("Input job experience [> 1]: ", new ExperienceValidation());
+		int jobExperience = Integer.parseInt(jobExperienceInput);
+		String jobPreferences = validateInput("Input job preferences [Backend Dev | Frontend Dev][case sensitive]: ", new JobPreferencesValidation());
 		
 		
 		
@@ -97,6 +84,15 @@ public class Main {
 				}
 			}
 		}
+	}
+	
+	private String validateInput(String prompt, ValidationStrategy strategy) {
+		String input;
+		do {
+			System.out.print(prompt);
+			input = scan.nextLine();
+		} while (!strategy.validate(input));
+		return input;
 	}
 	
 	public static void main(String[] args) {
