@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import factory.ApplicantFactory;
 import model.Applicant;
 
 public class Main {
-	Scanner scan = new Scanner(System.in);
-	Random rand = new Random();
-	ArrayList<Applicant> database = new ArrayList<>();
+	private Scanner scan = new Scanner(System.in);
+	private ArrayList<Applicant> database = new ArrayList<>();
+	private ApplicantFactory applicantFactory = new ApplicantFactory();
 	
 	public Main() {
 		String option = "";
@@ -48,17 +49,10 @@ public class Main {
 					jobPreferences = scan.nextLine();
 				} while(!jobPreferences.equals("Backend Dev") && !jobPreferences.equals("Frontend Dev"));
 				
-				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-				String randomCode = "";
 				
-				for(int i = 0; i < 5; i++) {
-					int index = rand.nextInt(characters.length());
-					randomCode += characters.charAt(index);
-				}
 				
+				database.add(applicantFactory.createApplicant(name, jobExperience, jobPreferences));
 				System.out.println("Data submitted!");
-				
-				database.add(new Applicant(randomCode, name, jobExperience, jobPreferences));
 				break;
 
 			case "2":
