@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+
+import observer.ApplicantObserver;
 import state.ApplicantState;
 import state.SubmissionState;
 
@@ -9,6 +12,7 @@ public class Applicant {
 	private int jobExperience;
 	private String jobPreferences;
 	private ApplicantState state;
+	private ArrayList<ApplicantObserver> observers = new ArrayList<>();
 	
 	public Applicant(String code, String name, int jobExperience, String jobPreferences) {
 		super();
@@ -18,40 +22,40 @@ public class Applicant {
 		this.jobPreferences = jobPreferences;
 		this.state = new SubmissionState();
 	}
+	
+	public void addObserver(ApplicantObserver observer) {
+		observers.add(observer);
+	}
+	public void notifyObservers() {
+		for (ApplicantObserver observer : observers) {
+			observer.onStateChange(this);
+		}
+	}
 	public String getCode() {
 		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public int getJobExperience() {
 		return jobExperience;
-	}
-	public void setJobExperience(int jobExperience) {
-		this.jobExperience = jobExperience;
-	}
-	public ApplicantState getState() {
-		return state;
-	}
-	public void setState(ApplicantState state) {
-		this.state = state;
-	}
-	public String getStateName() {
-		return state.getStateName();
 	}
 	public String getJobPreferences() {
 		return jobPreferences;
 	}
-	public void setJobPreferences(String jobPreferences) {
-		this.jobPreferences = jobPreferences;
+	public String getStateName() {
+		return state.getStateName();
 	}
-	
+	public void setState(ApplicantState state) {
+		this.state = state;
+		notifyObservers();
+	}
+	public ApplicantState getState() {
+		return state;
+	}
+	public void changeState() {
+		state.handle(this);
+	}
 	public void displayInformation() {
 		System.out.println("Applicant Code : " + this.code);
 		System.out.println("Applicant Name : " + this.name);
@@ -59,9 +63,4 @@ public class Applicant {
 		System.out.println("Job Preference : " + this.jobPreferences);
 		System.out.println("Current Phase  : " + this.state.getStateName());
 	}
-	public void changeState() {
-		state.handle(this);
-	}
-	
-	
 }

@@ -81,7 +81,7 @@ public class Main {
 				do {
 					System.out.println("Preview next applicant form ? [N for next | U to update applicant status | Q to quit][case sensitive]: ");
 					choice = scan.nextLine();
-				} while (!choice.equals("N") && !choice.equals("Q"));
+				} while (!choice.equals("N") && !choice.equals("U") && !choice.equals("Q"));
 				
 				switch (choice) {
 				case "N":
@@ -90,7 +90,7 @@ public class Main {
 				case "U":
 					applicant.changeState();
 					System.out.println("Applicant status updated");
-					break;
+					return;
 					
 				case "Q":
 					return;

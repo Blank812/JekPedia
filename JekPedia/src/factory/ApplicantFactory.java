@@ -3,6 +3,7 @@ package factory;
 import java.util.Random;
 
 import model.Applicant;
+import observer.ApplicantLogger;
 
 public class ApplicantFactory {
 	private Random rand = new Random();
@@ -16,6 +17,8 @@ public class ApplicantFactory {
 			randomCode.append(characters.charAt(index));
 		}
 		
-		return new Applicant(randomCode.toString(), name, jobExperience, jobPreferences);
+		Applicant applicant = new Applicant(randomCode.toString(), name, jobExperience, jobPreferences);
+		applicant.addObserver(new ApplicantLogger());
+		return applicant;
 	}
 }
