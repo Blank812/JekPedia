@@ -63,4 +63,9 @@ public class Applicant {
 		System.out.println("Job Preference : " + this.jobPreferences);
 		System.out.println("Current Phase  : " + this.state.getStateName());
 	}
+	
+	public void performAction() {
+		System.out.println("Applicant is performing default action.");
+	}
+
 }
